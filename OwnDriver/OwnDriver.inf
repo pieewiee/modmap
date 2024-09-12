@@ -1,18 +1,19 @@
 ;
-; driver.inf
+; OwnDriver.inf
 ;
 
 [Version]
 Signature="$WINDOWS NT$"
-Class=Sample ; TODO: edit Class
-ClassGuid={78A1C341-4539-11d3-B88D-00C04FAD5171} ; TODO: edit ClassGuid
+PnpLockdown=1
+Class=Testing ; TODO: edit Class
+ClassGuid={78A1C341-4539-11d3-d88D-00C04FAD5172} ; TODO: edit ClassGuid
 Provider=%ManufacturerName%
-CatalogFile=driver.cat
+CatalogFile=OwnDriver.cat
 DriverVer= ; TODO: set DriverVer in stampinf property pages
 
 [DestinationDirs]
 DefaultDestDir = 12
-driver_Device_CoInstaller_CopyFiles = 11
+OwnDriver_Device_CoInstaller_CopyFiles = 11
 
 ; ================= Class section =====================
 
@@ -27,7 +28,7 @@ HKR,,Icon,,-5
 1 = %DiskName%,,,""
 
 [SourceDisksFiles]
-driver.sys  = 1,,
+OwnDriver.sys  = 1,,
 WdfCoInstaller$KMDFCOINSTALLERVERSION$.dll=1 ; make sure the number matches with SourceDisksNames
 
 ;*****************************************
@@ -38,49 +39,49 @@ WdfCoInstaller$KMDFCOINSTALLERVERSION$.dll=1 ; make sure the number matches with
 %ManufacturerName%=Standard,NT$ARCH$
 
 [Standard.NT$ARCH$]
-%driver.DeviceDesc%=driver_Device, Root\driver ; TODO: edit hw-id
+%OwnDriver.DeviceDesc%=OwnDriver_Device, Root\OwnDriver ; TODO: edit hw-id
 
-[driver_Device.NT]
+[OwnDriver_Device.NT]
 CopyFiles=Drivers_Dir
 
 [Drivers_Dir]
-driver.sys
+OwnDriver.sys
 
 ;-------------- Service installation
-[driver_Device.NT.Services]
-AddService = driver,%SPSVCINST_ASSOCSERVICE%, driver_Service_Inst
+[OwnDriver_Device.NT.Services]
+AddService = OwnDriver,%SPSVCINST_ASSOCSERVICE%, OwnDriver_Service_Inst
 
-; -------------- driver driver install sections
-[driver_Service_Inst]
-DisplayName    = %driver.SVCDESC%
+; -------------- OwnDriver driver install sections
+[OwnDriver_Service_Inst]
+DisplayName    = %OwnDriver.SVCDESC%
 ServiceType    = 1               ; SERVICE_KERNEL_DRIVER
 StartType      = 3               ; SERVICE_DEMAND_START
 ErrorControl   = 1               ; SERVICE_ERROR_NORMAL
-ServiceBinary  = %12%\driver.sys
+ServiceBinary  = %12%\OwnDriver.sys
 
 ;
-;--- driver_Device Coinstaller installation ------
+;--- OwnDriver_Device Coinstaller installation ------
 ;
 
-[driver_Device.NT.CoInstallers]
-AddReg=driver_Device_CoInstaller_AddReg
-CopyFiles=driver_Device_CoInstaller_CopyFiles
+[OwnDriver_Device.NT.CoInstallers]
+AddReg=OwnDriver_Device_CoInstaller_AddReg
+CopyFiles=OwnDriver_Device_CoInstaller_CopyFiles
 
-[driver_Device_CoInstaller_AddReg]
+[OwnDriver_Device_CoInstaller_AddReg]
 HKR,,CoInstallers32,0x00010000, "WdfCoInstaller$KMDFCOINSTALLERVERSION$.dll,WdfCoInstaller"
 
-[driver_Device_CoInstaller_CopyFiles]
+[OwnDriver_Device_CoInstaller_CopyFiles]
 WdfCoInstaller$KMDFCOINSTALLERVERSION$.dll
 
-[driver_Device.NT.Wdf]
-KmdfService =  driver, driver_wdfsect
-[driver_wdfsect]
+[OwnDriver_Device.NT.Wdf]
+KmdfService =  OwnDriver, OwnDriver_wdfsect
+[OwnDriver_wdfsect]
 KmdfLibraryVersion = $KMDFVERSION$
 
 [Strings]
 SPSVCINST_ASSOCSERVICE= 0x00000002
 ManufacturerName="<Your manufacturer name>" ;TODO: Replace with your manufacturer name
 ClassName="Samples" ; TODO: edit ClassName
-DiskName = "driver Installation Disk"
-driver.DeviceDesc = "driver Device"
-driver.SVCDESC = "driver Service"
+DiskName = "OwnDriver Installation Disk"
+OwnDriver.DeviceDesc = "OwnDriver Device"
+OwnDriver.SVCDESC = "OwnDriver Service"

@@ -7,39 +7,42 @@
     </Filter>
     <Filter Include="Header Files">
       <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
-      <Extensions>h;hh;hpp;hxx;hm;inl;inc;ipp;xsd</Extensions>
+      <Extensions>h;hpp;hxx;hm;inl;inc;xsd</Extensions>
     </Filter>
     <Filter Include="Resource Files">
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Driver Files">
+      <UniqueIdentifier>{8E41214B-6785-4CFE-B992-037D68949A14}</UniqueIdentifier>
+      <Extensions>inf;inv;inx;mof;mc;</Extensions>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="stdafx.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="comm.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="map.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="hijack.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
+    <Inf Include="OwnDriver.inf">
+      <Filter>Driver Files</Filter>
+    </Inf>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="main.cpp">
+    <ClCompile Include="..\..\WDMDriver2\WDMDriver2\core.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="comm.cpp">
+    <ClCompile Include="..\..\WDMDriver2\WDMDriver2\main.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="map.cpp">
+    <ClCompile Include="..\..\WDMDriver2\WDMDriver2\util.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="hijack.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\WDMDriver2\WDMDriver2\core.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\WDMDriver2\WDMDriver2\stdafx.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\WDMDriver2\WDMDriver2\util.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

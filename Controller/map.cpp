@@ -1,6 +1,7 @@
 #include "stdafx.h"
+#include <iostream>
 
-// CBA to make this cleaner
+
 namespace Map {
 	PIMAGE_SECTION_HEADER TranslateRawSection(PIMAGE_NT_HEADERS nt, DWORD rva) {
 		auto section = IMAGE_FIRST_SECTION(nt);
@@ -22,7 +23,7 @@ namespace Map {
 		return base + section->PointerToRawData + (rva - section->VirtualAddress);
 	}
 
-	BOOLEAN ResolveImports(Comm::Process &process, PBYTE base, PIMAGE_NT_HEADERS nt) {
+	BOOLEAN ResolveImports(process::Process& process, PBYTE base, PIMAGE_NT_HEADERS nt) {
 		auto rva = nt->OptionalHeader.DataDirectory[IMAGE_DIRECTORY_ENTRY_IMPORT].VirtualAddress;
 		if (!rva) {
 			return TRUE;
@@ -39,11 +40,14 @@ namespace Map {
 				break;
 			}
 
+
+
 			auto module = LoadLibraryA(moduleName);
 			if (!module) {
 				errorf("failed to load module: %s\n", moduleName);
 				return FALSE;
 			}
+
 
 			PBYTE processModuleBase = NULL;
 			DWORD processModuleSize = 0;
@@ -62,7 +66,7 @@ namespace Map {
 	}
 
 	VOID ResolveRelocations(PBYTE base, PIMAGE_NT_HEADERS nt, PBYTE mapped) {
-		auto &baseRelocDir = nt->OptionalHeader.DataDirectory[IMAGE_DIRECTORY_ENTRY_BASERELOC];
+		auto& baseRelocDir = nt->OptionalHeader.DataDirectory[IMAGE_DIRECTORY_ENTRY_BASERELOC];
 		if (!baseRelocDir.VirtualAddress) {
 			return;
 		}
@@ -83,7 +87,7 @@ namespace Map {
 				auto offset = data & 0xFFF;
 
 				if (type == IMAGE_REL_BASED_DIR64) {
-					*reinterpret_cast<PBYTE *>(relocBase + offset) += (mapped - reinterpret_cast<PBYTE>(nt->OptionalHeader.ImageBase));
+					*reinterpret_cast<PBYTE*>(relocBase + offset) += (mapped - reinterpret_cast<PBYTE>(nt->OptionalHeader.ImageBase));
 				}
 			}
 
@@ -92,11 +96,12 @@ namespace Map {
 		}
 	}
 
-	BOOLEAN MapHeaders(Comm::Process &process, PBYTE base, PIMAGE_NT_HEADERS nt, PBYTE mapped) {
+	BOOLEAN MapHeaders(process::Process& process, PBYTE base, PIMAGE_NT_HEADERS nt, PBYTE mapped) {
 		return process.Write(mapped, base, sizeof(nt->Signature) + sizeof(nt->FileHeader) + nt->FileHeader.SizeOfOptionalHeader) == ERROR_SUCCESS;
+
 	}
 
-	BOOLEAN MapSections(Comm::Process &process, PBYTE base, PIMAGE_NT_HEADERS nt, PBYTE mapped) {
+	BOOLEAN MapSections(process::Process& process, PBYTE base, PIMAGE_NT_HEADERS nt, PBYTE mapped) {
 		auto section = IMAGE_FIRST_SECTION(nt);
 		for (auto i = 0; i < nt->FileHeader.NumberOfSections; ++i, ++section) {
 			auto sectionSize = min(section->SizeOfRawData, section->Misc.VirtualSize);
@@ -114,13 +119,14 @@ namespace Map {
 		return TRUE;
 	}
 
-	PBYTE ExtendModule(Comm::Process &process, PIMAGE_NT_HEADERS nt, LPCWSTR module) {
+	PBYTE ExtendModule(process::Process& process, PIMAGE_NT_HEADERS nt, LPCWSTR module) {
 		PBYTE moduleBase = NULL;
 		DWORD moduleSize = 0;
 
 		printf("[-] extending %ws\n", module);
 
 		auto status = process.Module(module, &moduleBase, &moduleSize);
+		// print status
 		if (status != ERROR_SUCCESS || !moduleBase) {
 			errorf("failed to find module %ws (%X)\n", module, status);
 			return NULL;
@@ -136,7 +142,7 @@ namespace Map {
 		return moduleBase + moduleSize;
 	}
 
-	PVOID ExtendMap(Comm::Process &process, PBYTE base, LPCWSTR module) {
+	PVOID ExtendMap(process::Process& process, PBYTE base, LPCWSTR module) {
 		auto dos = reinterpret_cast<PIMAGE_DOS_HEADER>(base);
 		if (dos->e_magic != IMAGE_DOS_SIGNATURE) {
 			errorf("invalid DOS signature\n");
@@ -164,6 +170,7 @@ namespace Map {
 
 		ResolveRelocations(base, nt, mapped);
 
+
 		if (!MapHeaders(process, base, nt, mapped)) {
 			errorf("failed to map headers\n");
 			return NULL;
@@ -176,7 +183,7 @@ namespace Map {
 		return mapped + nt->OptionalHeader.AddressOfEntryPoint;
 	}
 
-	PVOID ExtendMap(Comm::Process &process, LPCWSTR filePath, LPCWSTR module) {
+	PVOID ExtendMap(process::Process& process, LPCWSTR filePath, LPCWSTR module) {
 		std::ifstream file(filePath, std::ios::ate | std::ios::binary);
 		if (!file) {
 			errorf("failed to open file: \"%ws\"\n", filePath);
