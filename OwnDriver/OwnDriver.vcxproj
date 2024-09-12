@@ -93,14 +93,14 @@
     <FilesToPackage Include="$(TargetPath)" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\WDMDriver2\WDMDriver2\core.c" />
-    <ClCompile Include="..\..\WDMDriver2\WDMDriver2\main.c" />
-    <ClCompile Include="..\..\WDMDriver2\WDMDriver2\util.c" />
+    <ClCompile Include="core.c" />
+    <ClCompile Include="main.c" />
+    <ClCompile Include="util.c" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\WDMDriver2\WDMDriver2\core.h" />
-    <ClInclude Include="..\..\WDMDriver2\WDMDriver2\stdafx.h" />
-    <ClInclude Include="..\..\WDMDriver2\WDMDriver2\util.h" />
+    <ClInclude Include="core.h" />
+    <ClInclude Include="stdafx.h" />
+    <ClInclude Include="util.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

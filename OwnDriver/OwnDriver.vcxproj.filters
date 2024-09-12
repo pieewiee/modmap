@@ -24,24 +24,24 @@
     </Inf>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\WDMDriver2\WDMDriver2\core.c">
+    <ClCompile Include="core.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\WDMDriver2\WDMDriver2\main.c">
+    <ClCompile Include="main.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\WDMDriver2\WDMDriver2\util.c">
+    <ClCompile Include="util.c">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\WDMDriver2\WDMDriver2\core.h">
+    <ClInclude Include="core.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\WDMDriver2\WDMDriver2\stdafx.h">
+    <ClInclude Include="stdafx.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\WDMDriver2\WDMDriver2\util.h">
+    <ClInclude Include="util.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
